@@ -1,0 +1,105 @@
+INSTRUCTIONS:
+Given are given three tables Table 1, Table 2 and a Partially Aligned Table, your aim is to align the two tables( Table 1 and Table 2) using Partially Aligned Table and output a Final Aligned Table
+
+Step by step, FOLLOW this algorithm for the alignment ->
+1. Observe the Table 1 and Table 2 and keep differences in memory. 
+2. If you think that Table 1 and Table 2 are transpose of each other. Take transpose of Table 2 to match the structure of Table 1.
+3. Using the Partially Aligned Table provided to align the remaining rows and columns. 
+4. If you are unable to match any column or row in Table 1 to Table 2, do not match them forcefully, you can just keep them as extras and fill the corresponding values with '-', a dash
+5. It is also possible that there are multiple columns from Table 1 matching to Table 2 or vice versa, in such case you can do multi mapping. You can refer to example below.
+5. You should MAKE SURE that Partially Aligned Table should be a part of Final Aligned Table.
+6. Ensure that the extra rows and columns from each tables should be at the end of the table.
+7. Recheck if the alignments and check if the columns, rows as well as the cells are properly aligned or not. 
+8. Ensure that all the columns and all the rows in both the tables are aligned in the Alignment Table and the extras are at the end. 
+9. All cells from Table1 and Table2 need to there in Final Aligned Table.
+10. DON'T FORGET any columns from either tables in Final Aligned Table
+11. In some cases Partially Aligned Table might be None. In such cases perform alignment without using Partially Aligned Table
+12. There is no need to output anything other than markdown of the Final Aligned Table
+13. You should make sure that you do not add columns which are not there in either table.
+
+
+You should Ensure:
+1. All columns and rows whether mapped or unmapped should be there in Final Aligned Table. 
+2. There should be equal number of columns in each row. 
+3. You should not add any column by hallucinating that is not there in Table 1 and Table 2.
+4. You should use only the columns provided in Table 1 and Table 2, do not decompose or merge any columns in a particular table.
+
+OUTPUT:
+After mapping Table1 and Table2, Create a Alignment table.
+ENSURE STRUCTURAL INTEGRITY OF THE ALIGNMENT TABLE AFTER algorithm.
+Follow these steps for STRUCTURAL INTEGRITY ->
+Only output fully aligned table in the format - 
+    1. The alignment should be at the cell level in every single cell (in rows and columns)
+    2. All the values in the table should be separated by / ie, table1.value/table2.value
+    3. Strictly, For each column or row headers as well as cell use the template - 
+        a. cell1 / cell2 (cell1 is from table1 and cell2 from table2)
+        b. use    /cell2 or cell1/   for missing or extra row,columns or cells.
+    4. There are equal number of cells in every row including header
+Ensure all adjustments and discrepancies are transparently documented. 
+
+STRICTLY Use this template to output table alignments ->
+
+| Column Header.T1/Column Header.T2 | Column Header.T1/-                | -/Column Header.T2 |
+|-----------------------------------|-----------------------------------|--------------------|
+| value1/value2                     | value1/-                          | -/value2           |
+| value1/-                          | -/-                               | -/value2           |
+| -/value2                          | value1/-                          | -/-                |
+| ...                               | ...                               | ...                |
+
+Return only the formatted tables without any reasoning, commentary, or additional text.
+only OUTPUT a Alignment table with all alignments in Markdown table format.
+Prioritize clarity, and logical structure throughout the alignment process. 
+
+Below is an example of alignment:
+Input:
+Table 1: 
+| Year | Competition | Venue | Position | Event | Notes |
+| ---- | ----------- | ----- | -------- | ----- | ----- |
+| 2011 | European Athletics Championships | Tallinn, Estonia | 2nd | 100m | 10.41 |
+| 2011 | European Athletics Championships | Tallinn, Estonia | 2nd | 4 × 100 m relay | 39.48 |
+| 2011 | National Junior Athletic League Finals | - | 1st | 200m | 20.98 |
+| 2012 | World Junior Athletics Championships | Barcelona, Spain | 1st | 100m | 10.05 CR |
+| 2012 | Summer Olympics | London, United Kingdom | 3rd (Semis) | 100m | 10.06 |
+| 2012 | Summer Olympics | London, United Kingdom | DSQ | 4 × 100 m relay | N/A |
+
+
+Table 2: 
+
+| Year | Place                 | Country               | Position       | Event          | Notes     |
+|------|-----------------------|-----------------------|----------------|----------------|-----------|
+| 2011 | Tallinn               | Estonia               | 2nd            | 100m           | 10.41     |
+| 2011 | Tallinn               | Estonia               | 2nd            | 4 × 100 m relay | 39.48     |
+| 2011 | -                     | -                     | 1st            | 200m           | 20.98     |
+| 2012 | Barcelona             | Spain                 | 1st            | 100m           | 10.05 CR  |
+| 2012 | London                | United Kingdom        | 3rd (Semis)    | 100m           | 10.06     |
+| 2012 | London                | United Kingdom        | DSQ            | 4 × 100 m relay | N/A       |
+
+
+Partially Aligned Table: 
+
+| Year.T1 / Year.T2 | Position.T1 / Position.T2 | Event.T1 / Event.T2 | Notes.T1 / Notes.T2 |
+| 2011 / 2011 | 2nd / 2nd | 100m / 100m | 10.41 / 10.41 |
+| 2011 / 2011 | 2nd / 2nd | 4 × 100 m relay / 4 × 100 m relay | 39.48 / 39.48 |
+| 2011 / 2011 | 1st / 1st | 200m / 200m | 20.98 / 20.98 |
+| 2012 / 2012 | 1st / 1st | 100m / 100m | 10.05 CR / 10.05 CR |
+| 2012 / 2012 | 3rd (Semis) / 3rd (Semis) | 100m / 100m | 10.06 / 10.06 |
+| 2012 / 2012 | DSQ / DSQ | 4 × 100 m relay / 4 × 100 m relay | N/A / N/A |
+
+
+Output:
+
+Final Aligned Table
+| Year.T1/Year.T2 | Competition.T1/- | Venue.T1/Place.T2 | Venues.T1/Country.T2 | Position.T1/Position.T2 | Event.T1/Event.T2 | Notes.T1/Notes.T2 |
+|-----------|---------------|-------------|----------------|-------------------|-------------|-------------|
+| 2011/2011 | European Athletics Championships/- | Tallinn, Estonia/Tallinn | Tallinn, Estonia/Estonia | 2nd/2nd | 100m/100m | 10.41/10.41 |
+| 2011/2011 | European Athletics Championships/- | Tallinn, Estonia/Tallinn | Tallinn, Estonia/Estonia | 2nd/2nd | 4 × 100 m relay/4 × 100 m relay | 39.48/39.48 |
+| 2011/2011 | National Junior Athletic League Finals/- | -/- | -/- | 1st/1st | 200m/200m | 20.98/20.98 |
+| 2012/2012 | World Junior Athletics Championships/- | Barcelona, Spain/Barcelona | Barcelona, Spain/Spain | 1st/1st | 100m/100m | 10.05 CR/10.05 CR |
+| 2012/2012 | Summer Olympics/- | London, United Kingdom/London | London, United Kingdom/United Kingdom | 3rd (Semis)/3rd (Semis) | 100m/100m | 10.06/10.06 |
+| 2012/2012 | Summer Olympics/- | London, United Kingdom/London | London, United Kingdom/United Kingdom | DSQ/DSQ | 4 × 100 m relay/4 × 100 m relay | N/A/N/A |
+
+
+As you can see in the above example that column "Competition" from Table 1 has no corresponding matching column in Table 2, so it is output as extra column with dash('-') to replace values from Table from where the column is missing. 
+You can also see in the above Finally Aligned Table that column from Table 1  "Venue" is matched with both "Country" and "Place" from Table 2 because of high similarity between values of {"Venues" and "Country"} and {"Venues" and "Place"}.
+Also you can see that all columns from both Table 1 and Table 2 in Final Aligned Table. 
+

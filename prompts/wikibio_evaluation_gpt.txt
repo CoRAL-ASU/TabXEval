@@ -1,0 +1,39 @@
+You are a great Text to Table converter. You will be given a text and you have to convert it into a table.
+You can choose the columns appropriately. The text will be enclosed in triple ticks(```). 
+Output should strictly be a markdown table.
+
+Below are some examples of the text and the corresponding table.
+
+Example 1:
+
+Input:
+```
+leonard shenoff randle (born february 12, 1949) is a former major league baseball player. he was the first-round pick of the washington senators in the secondary phase of the june 1970 major league baseball draft, tenth overall.
+```
+
+Output: 
+
+
+| debutteam | washington senators |
+| name      | lenny randle        |
+| birth date| 12 february 1949    |
+
+
+
+Example 2:
+
+Input:
+```
+philippe adnot (born 25 august 1945 in rhèges) is a member of the senate of france. he was first elected in 1989, and represents the aube department. a farmer by profession, he serves as an independent, and also serves as the head of the general council of aube, to which he was elected to represent the canton of méry-sur-seine in 1980. in 1998 and 2008, he was re-elected to the senate in the first round, avoiding the need for a run-off vote. having contributed to the creation of the university of technology of troyes, in 1998 he was made the first vice president of the university board, of which he is currently the president. he is a member of the senate's committee on the laws relating to the freedoms and responsibilities of universities. as of 2009, he serves as the delegate from the administrative meeting for senators not on the list of another group he is decorated as a chevalier of the ordre national de mérite agricole.
+```
+
+Output:
+
+
+| birth place | france |
+| occupation | farmer |
+| residence | france |
+| birth date | 25 august 1945 |
+| constituency | aube canton de méry-sur-seine |
+| name | philippe adnot |
+

@@ -1,0 +1,253 @@
+You are an expert in comparing any two given entities. 
+
+Your task is to find the exact difference between value 1 and value 2.
+You are given a table with each cell having value 1 and value 2 seperated by '/' in the format -> value 1/value 2. 
+Also the first row of the table is the column header in the same format as above -> Column Header 1/ Column Header 2
+Column Header 1, Value 1 and Column Header 2, Value 2 represents entities from two different tables, Table 1 and Table 2 respectively and are split by '/'. 
+If the cell has no values and represented by '-', skip the cell and do not perform any operations defined below.
+If BOTH parts of cells are empty then and then only the tuple would be '[-]'
+Using Column Headers and values as context, we need to construct a new tuple for the 'Values' entity as Follows:
+1. Data Type: Determine the data type for the values, based on Column headers as well as Values. Take table context also in consideration. Only choose ONE of the described data types.
+        a. Numerical, 
+        b. string, 
+        c. list, 
+        d. Date,
+        e. Time, 
+        f. Boolean,
+        g. Others,
+        h. Empty -> Choose this type if the part of cell is empty.
+
+2. Entity: Recognize the entity of the values. For recognizing the entity type, you also need to take into consideration the context of table and column header of the cell. In this way you can choose more accurately the entity type. Only choose ONE of the described entities.
+        a. Person
+            Refers to names of individuals.
+            Example: "Albert Einstein", "Marie Curie", "A. Madison".
+        b. Organization
+            Includes entities such as companies, institutions, government bodies, and other groups.
+            Example: "Google", "United Nations", "NASA".
+        c. Location
+            Geographic locations, such as countries, cities, landmarks, or natural places.
+            Example: "Paris", "Mount Everest", "Amazon Rainforest", "US".
+        d. Date
+            Any temporal reference to calendar dates. It could also be just a year
+            Example: "January 1, 2024", "20th century", "2003".
+        e. Time
+            Specific points in time, typically hours and minutes or parts of the day. It could also be a unit of time
+            Example: "3:00 PM", "midnight", "12 secs", "2.4ms".
+        f. Money (Monetary Values)
+            Amounts involving currency. You should also use table and headers of cells as context to determine is cell is about money.
+            Example: "$500", "200 Euros".
+        g. Percent
+            Expressions of percentages.
+            Example: "25%", "three-quarters".
+        h. Facility
+            Refers to man-made structures, buildings, or large infrastructure.
+            Example: "Eiffel Tower", "Golden Gate Bridge".
+        i. Event
+            Named occurrences or events.
+            Example: "World War II", "Olympics 2024".
+        j. Product
+            Commercial or consumer products, including devices, software, or other goods.
+            Example: "iPhone 14", "Tesla Model S".
+        k. Work of Art
+            Titles of creative works such as books, movies, paintings, or songs.
+            Example: "The Great Gatsby", "Mona Lisa".
+        l. Language
+            References to languages.
+            Example: "English", "Mandarin".
+        m. Nationality/Religious/Political Group
+            Groups associated with ethnicity, nationality, religion, or politics.
+            Example: "American", "Christian", "Democrats".
+        n. Ordinal
+            Words or numbers denoting order.
+            Example: "First", "3rd".
+        o. Cardinal
+            Numerical values that are not dates, times, or percentages.
+            Example: "One hundred", "2,000".	
+        p. Others
+            Any entity that does not fit into the above categories.
+            Example: "Unknown", "N/A".
+
+3. Unit: Determine the unit of values.If the units are not explicitly metioned in the values, infere the Units based on the Column headers. 
+4. Missing/Extra Information: If there is any missing or extra value.
+        a. Missing Information: If there is any missing information in the cell, provide the missing information. 
+            Example of Missing Information: "New York, US/ New York" -> [Location/Location, Location/Location, None/None, Missing Information: US, None]
+        b. Extra Information: If there is any extra information in the cell, provide the extra information.
+            Example of Extra Information: "New York/ New York, US" -> [Location/Location, Location/Location, None/None, Extra Information: None, US]
+
+5. Difference: To Recognize the exact difference use all the above factor along with the types below:
+        a. For numerical values, if they are in same unit provide absolute difference.For different units, *First convert them to same unit as first part of cell* and then take abosolute difference of 1st converted part of cell and 2nd part of cell(provide explanation with calculation of conversion and calculation of difference in the tuple itself, see format ahead). Format to report numeric difference-> "<difference_type>:<difference(this should be a number with characters being only digits):<unit of the difference>:<explanation for conversion(if any)>".
+            Example of "10m/798cm"->[Numerical/Numerical, Others/Others, m/cm, None, absolute difference:2.02:m:Converted 798cm to 7.98m, Now difference is <10m- 7.98m>= 2.02m] 
+            Another Example of Numerical values "$30.1 million/$38.1 million"->[Numerical/Numerical, Money/Money, $/$, None, absolute difference: 38.1 million - 30.1 million = 8 million] 
+        b. For Dates, exact differences between the dates *COMPULSORY in DAYS*. Format to report date difference-> "<difference_type>:<difference(this should be a number)>:<unit(days)>:<explanation for conversion from other units to days>"
+        c. For Times, exact difference between time should *COMPULSORY be in SECONDS* only. You need to *convert both parts into SECONDS first and then get the absolute difference. Format to report time difference,  "<difference_type>:<difference(this should be a decimal number)>:seconds:<explanation for conversion from other units to seconds>"
+            Example of Time cell "23 μs/6.4 ms" -> [Time/Time, Others/Others, μs/ms, None, absolute difference:0.0064:s:Converted 23 μs to 0.000023s, Now difference is <0.000023s - 0.0064s>= 0.006377s]
+            Another example of Time cell "3:00 PM/12:00 AM" -> [Time/Time, Others/Others, PM/AM, None, absolute difference:32400:s:Converted 3:00 PM to 15:00:00, Now difference is <15:00:00 - 12:00:00> = 10800s]
+            Another example of Time cell "15 min/1.3 h" -> [Time/Time, Others/Others, min/h, None, absolute difference:4620:s:Converted 15 min to 900s and 1.3 h to 4680s, Now difference is <900s - 4680s> = 3780s]
+            As you can see that the cell values are converted to seconds and then the difference is calculated.
+        d. For List types, I want you to give me the list parsed and in square brackets. Format to report list difference-> "<difference type>:list1:list2:list difference:['element1', 'element2', 'element3']"
+            Example of List cell "Apple, Orange, Banana/[Apple, Banana, Orange]" -> [List/List, Others/Others, None/None, None, list difference:['Apple', 'Orange', 'Banana']:['Apple', 'Orange', 'Banana']:[]] ]
+        e. For strings, format to report string difference->"<difference type>:<explanation of difference>". For strings choose difference from below types appropriately.
+                i. spelling mistake
+                    Example: "Juice -> juce, Facility -> Facitily"
+                ii. abbreviated string
+                    Example: "United States -> US, Joe Biden -> J. Biden"
+                iii. semantically different, where strings are unrelated and do not match or if there is information loss.
+                    Example: "dragon->dog, america -> asia, John Bently -> A. Bently". Here you can see abbreviated form is not correct so they are semantically different.
+                iv. semantically similar, where strings are highly related and almost match
+                    Example: "Champion -> Champs, House-> Home"
+                iv. other sting difference
+        
+        f. For Boolean values, if they are different, provide the exact difference.
+            Example of Boolean cell "Yes/No" -> [Boolean/Boolean, Others/Others, None/None, None, logically different: Yes -> No]
+            Another example of Boolean cell "Yes/Yeah" -> [Boolean/Boolean, Others/Others, None/None, None, logically similar: Yes -> Yeah]
+
+        Using the different types of "Differences", Recognize the exact value for difference
+
+Generate a Table corresponding to the input table, which contains tuple of all the above factors described- 
+Output Tuple for each cell : [Data Type of value 1 / Data Type of value 2 , Entity of value 1 / Entity of value 2,  Unit of value 1 / Unit of value 2, Missing/Extra Information, Difference]
+
+OUTPUT : ONLY an Output table where output tuple for each cell corresponds to each of its respective cell in the input table.
+
+EXAMPLE : Below is the given examples - 
+
+Example 1 :
+
+Input table =
+| Director.T1/Director.T2         | Writer.T1/Writer.T2         | Original Air Date/Air Date   | Production Code/Prod. Code   |
+|:--------------------------------|:----------------------------|:-----------------------------|:-----------------------------|
+| Richard Dale/R. Dale            | Tim Loane/T. Loane          | 21 March 2001/21/03/2001     | 101/106                      |
+| Richard Dale/R. Dale            | Julie Rutterford/J. Rutter  | 28 March 2001/28-03-2001     | -                            |
+| Richard Dale/R. Dale            | Andrew Rattenbury/A. Ratten | 4 April 2001/04/04/2001      | 103/107                      |
+| Jeremy Lovering/J. Lovering     | Tim Loane/T. Loane          | 11 April 2001/April 11, 2001 | -                            |
+| Jeremy Lovering/S. Aprahamian   | Julie Rutterford/J. Rutter  | 18 April 2001/18 Apr 2001    | 105/101                      |
+| Jeremy Lovering/R. Dale         | Andrew Rattenbury/A. Ratten | 25 April 2001/02 May 2001    | 106/105                      |
+| Sallie Aprahamian/S. Aprahamian | Andrew Rattenbury/A. Ratten | 2 May 2001/March 25, 2001    | 107/103                      |
+
+Output table = 
+| Director.T1/Director.T2 | Writer.T1/Writer.T2 | Original Air Date/Air Date | Production Code/Prod. Code |
+|:-----------------------|:----------------------|:---------------------------|:---------------------------|
+| [String/String, Person/Person, None/None, None, abbreviated string:Richard Dale -> R. Dale] | [String/String, Person/Person, None/None, None, abbreviated string:Tim Loane -> T. Loane] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] | [Numerical/Numerical, Cardinal/Cardinal, None/None, None, absolute difference:5:] |
+| [String/String, Person/Person, None/None, None, abbreviated string:Richard Dale -> R. Dale] | [String/String, Person/Person, None/None, None, abbreviated string:Julie Rutterford -> J. Rutter] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] | [-] |
+| [String/String, Person/Person, None/None, None, abbreviated string:Richard Dale -> R. Dale] | [String/String, Person/Person, None/None, None, abbreviated string:Andrew Rattenbury -> A. Ratten] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] | [Numerical/Numerical, Cardinal/Cardinal, None/None, None, absolute difference:4:] |
+| [String/String, Person/Person, None/None, None, abbreviated string:Jeremy Lovering -> J. Lovering] | [String/String, Person/Person, None/None, None, abbreviated string:Tim Loane -> T. Loane] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] | [-] |
+| [String/String, Person/Person, None/None, None, abbreviated string:Jeremy Lovering -> S. Aprahamian] | [String/String, Person/Person, None/None, None, abbreviated string:Julie Rutterford -> J. Rutter] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] | [Numerical/Numerical, Cardinal/Cardinal, None/None, None, absolute difference:4:] |
+| [String/String, Person/Person, None/None, None, semantically different:Jeremy Lovering -> R. Dale] | [String/String, Person/Person, None/None, None, abbreviated string:Andrew Rattenbury -> A. Ratten] | [Date/Date, Date/Date, None/None, None, absolute difference:7:days:] | [Numerical/Numerical, Cardinal/Cardinal, None/None, None, absolute difference:1:] |
+| [String/String, Person/Person, None/None, None, abbreviated string:Sallie Aprahamian -> S. Aprahamian] | [String/String, Person/Person, None/None, None, abbreviated string:Andrew Rattenbury -> A. Ratten] | [Date/Date, Date/Date, None/None, None, absolute difference:38:days:] | [Numerical/Numerical, Cardinal/Cardinal, None/None, None, absolute difference:4:] |
+
+
+Example 2 :
+
+Input table =
+| Half-life.T1/Half-life.T2   | Decay mode.T1/-   | Discovery year.T1/-   | Reaction.T1/Reaction.T2            |
+|:----------------------------|:------------------|:----------------------|:-----------------------------------|
+| 48 μs/15 milliseconds       | α, SF/-           | 1994/-                | 204Pb(50Ti,n)/200Pb(48Ca,n)        |
+| 23 μs/5 microseconds        | SF/-              | 1994/-                | 206Pb(50Ti,2n)/198Pb(50Ti,3n)      |
+| 2.3 s/12 seconds            | ε?, α, SF/-       | 1974/-                | 207Pb(50Ti,2n)/202Pb(48Ti,2n)      |
+| 6.4 ms/2 milliseconds       | α, SF/-           | 1974/-                | 208Pb(50Ti,2n)/203Bi(47Ti,3n)      |
+| 4.7 s/30 seconds            | ε, α, SF/-        | 1969/-                | 249Cf(12C,4n)/245Bk(11B,4n)        |
+| 4.1 s/18 seconds            | ε, α, SF/-        | 1969/-                | 249Cf(12C,4n)/246Bk(10B,3n)        |
+| 14.7 ms/40 milliseconds     | α, SF/-           | 1969/-                | 249Cf(13C,4n)/247Cf(13B,5n)        |
+| 3.2 s/9 seconds             | α, SF/-           | 1969/-                | 249Cf(13C,3n)/251Es(10Be,2n)       |
+| 2.5 s/1 second              | ε/-               | 1969/-                | 249Cf(13C,3n)/250Fm(9Be,3n)        |
+| 21 ms/50 milliseconds       | α, SF/-           | 1969/-                | 248Cm(16O,4n)/242Am(16C,6n)        |
+| 78 s/120 seconds            | α, SF/-           | 1970/-                | 248Cm(18O,5n)/243Am(17N,5n)        |
+| 4 s/8 seconds               | ε, α, SF/-        | 2001/-                | 244Pu(22Ne,5n)/240Np(21Ne,4n)      |
+| 2.3 s/5 seconds             | α, SF/-           | 1996/-                | 244Pu(22Ne,4n)/241Cm(18O,6n)       |
+| 15 min/20 minutes           | α, SF/-           | 1999/-                | 263Db( e−, ν e)/239Bk(20O,3n)      |
+| 8 s/14 seconds              | α, SF/-           | 1999/-                | 263Db( e−, ν e)/238Bk(19N,3n)      |
+| 1.1 min/3 minutes           | SF/-              | 2010/-                | 269Sg(—,α)/262Sg(—,β)              |
+| 23 s?/40 seconds            | SF/-              | 2007?/-               | 266Db( e−, ν e)?/265Sg( e−, ν e)   |
+| 1.3 h/2 hours               | SF/-              | 2004/-                | 271Sg(—,α)/270Bh(α, 3n)            |
+| 1.4 s?/30 seconds           | SF/-              | 2004?/-               | 268Db( e−, ν e)?/269Bh( e−, 2ν e)? |
+| 20 ms?/10 milliseconds      | SF/-              | 2010?/-               | 270Db( e−, ν e)?/272Mt(β−, α)      |
+
+Output table = 
+| Half-life.T1/Half-life.T2   | Decay mode.T1/-   | Discovery year.T1/-   | Reaction.T1/Reaction.T2            |
+|:----------------------------|:------------------|:----------------------|:-----------------------------------|
+| [Time/Time, Others/Others, μs/milliseconds, None, absolute difference:0.014952:s:Converted 48 μs to 0.000048s and 15 milliseconds to 0.015s, Now difference is <0.000048s - 0.015s> = 0.014952s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, μs/microseconds, None, absolute difference:0.000018:s:Converted 23 μs to 0.000023s and 5 microseconds to 0.000005s, Now difference is <0.000023s - 0.000005s> = 0.000018s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:9.7:s:Converted 2.3 s to 2.3s, Now difference is <2.3s - 12s> = 9.7s] | [String/Empty, Others/Empty, None/None, Extra Information: α, SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, ms/milliseconds, None, absolute difference:0.0044:s:Converted 6.4 ms to 0.0064s and 2 milliseconds to 0.002s, Now difference is <0.0064s - 0.002s> = 0.0044s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:25.3:s:Converted 4.7 s to 4.7s, Now difference is <4.7s - 30s> = 25.3s] | [String/Empty, Others/Empty, None/None, Extra Information: α, SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:13.9:s:Converted 4.1 s to 4.1s, Now difference is <4.1s - 18s> = 13.9s] | [String/Empty, Others/Empty, None/None, Extra Information: α, SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, ms/milliseconds, None, absolute difference:0.0253:s:Converted 14.7 ms to 0.0147s and 40 milliseconds to 0.04s, Now difference is <0.0147s - 0.04s> = 0.0253s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:5.8:s:Converted 3.2 s to 3.2s, Now difference is <3.2s - 9s> = 5.8s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/second, None, absolute difference:1.5:s:Converted 2.5 s to 2.5s, Now difference is <2.5s - 1s> = 1.5s] | [String/Empty, Others/Empty, None/None, None, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, ms/milliseconds, None, absolute difference:0.029:s:Converted 21 ms to 0.021s and 50 milliseconds to 0.05s, Now difference is <0.021s - 0.05s> = 0.029s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:42:s:Converted 78 s to 78s, Now difference is <78s - 120s> = 42s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:4:s:Converted 4 s to 4s, Now difference is <4s - 8s> = 4s] | [String/Empty, Others/Empty, None/None, Extra Information: α, SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:2.7:s:Converted 2.3 s to 2.3s, Now difference is <2.3s - 5s> = 2.7s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, min/minutes, None, absolute difference:300:s:Converted 15 min to 900s and 20 minutes to 1200s, Now difference is <900s - 1200s> = 300s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:6:s:Converted 8 s to 8s, Now difference is <8s - 14s> = 6s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, min/minutes, None, absolute difference:114:s:Converted 1.1 min to 66s and 3 minutes to 180s, Now difference is <66s - 180s> = 114s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:17:s:Converted 23 s to 23s, Now difference is <23s - 40s> = 17s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, Extra Information: ?, None] | [String/String, Others/Others, None/None, Extra Information: ?, None, other sting difference] |
+| [Time/Time, Others/Others, h/hours, None, absolute difference:1800:s:Converted 1.3 h to 4680s and 2 hours to 7200s, Now difference is <4680s - 7200s> = 2520s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, None, None] | [String/String, Others/Others, None/None, None, other sting difference] |
+| [Time/Time, Others/Others, s/seconds, None, absolute difference:28.6:s:Converted 1.4 s to 1.4s and 30 seconds to 30s, Now difference is <1.4s - 30s> = 28.6s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, Extra Information: ?, None] | [String/String, Others/Others, None/None, Extra Information: ?, other sting difference] |
+| [Time/Time, Others/Others, ms/milliseconds, None, absolute difference:0.01:s:Converted 20 ms to 0.02s and 10 milliseconds to 0.01s, Now difference is <0.02s - 0.01s> = 0.01s] | [String/Empty, Others/Empty, None/None, Extra Information: SF, None] | [Date/Empty, Date/Empty, None/None, Extra Information: ?, None] | [String/String, Others/Others, None/None, Extra Information: ?, other sting difference] |
+
+
+Example 3 :
+
+Input table =
+| Competition.T1/Competition.T2                                                  | Venue.T1/Location.T2                    | Position.T1/Rank.T2   | Event.T1/Event.T2   | Notes.T1/Notes.T2   |
+|:-------------------------------------------------------------------------------|:----------------------------------------|:----------------------|:--------------------|:--------------------|
+| -                                                                              | -                                       | 2nd/4th               | -                   | 9.97/9.87           |
+| -                                                                              | -                                       | 4th/6th               | -                   | 20.12/20.99         |
+| European Athletics Championships/European Athletics Champs                     | -                                       | -                     | -                   | 38.17/39.21         |
+| -                                                                              | Brussels, Belgium/-                     | 2nd/-                 | 200m/-              | 19.97/-             |
+| -                                                                              | Zürich, Switzerland/-                   | 5th/-                 | 100m/-              | 10.11/-             |
+| -                                                                              | London, United Kingdom/-                | 3rd/-                 | 200m/-              | 20.07/-             |
+| -                                                                              | London, United Kingdom/-                | 2nd/-                 | 4 × 100 m relay/-   | 37.81/-             |
+| -                                                                              | -                                       | 6th/3rd               | -                   | 10.29/10.77         |
+| World Championships in Athletics/World Champs in Athletics                     | -                                       | -                     | -                   | 37.47/36.90         |
+| -                                                                              | -                                       | -                     | -                   | 10.13/10.49         |
+| -                                                                              | -                                       | 3rd/5th               | -                   | 20.35/20.64         |
+
+Output table =
+| Competition.T1/Competition.T2                                                  | Venue.T1/Location.T2                    | Position.T1/Rank.T2   | Event.T1/Event.T2   | Notes.T1/Notes.T2                                                                                                                                                                      |
+|:-------------------------------------------------------------------------------|:----------------------------------------|:----------------------|:--------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [-]                                                                              | [-]                                       | [Ordinal/Ordinal, Ordinal/Ordinal, None/None, None, absolute difference:2:] | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:0.1:s:<9.97s - 9.87s>= 0.1s]                                          |
+| [-]                                                                              | [-]                                       | [Ordinal/Ordinal, Ordinal/Ordinal, None/None, None, absolute difference:2:] | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:0.87:s:<20.12s - 20.99s>= 0.87s]                                         |
+| [String/String, Event/Event, None/None, None, semantically similar: European Athletics Championships -> European Athletics Champs] | [-]                                       | [-]                     | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:1.04:s:<38.17s - 39.21s>= 1.04s]                                         |
+| [-]                                                                              | [String/Empty, Location/Empty, None/None, Extra Information: Belgium, None]        | [Ordinal/Empty, Ordinal/Empty, None/None, Extra Information: (Semis), None]                  | [Numerical/Empty, Event/Empty, None/None, None, None]              | [Time/Empty, Others/Empty, None/None, None, None]                                                                                                           |
+| [-]                                                                              | [String/Empty, Location/Empty, None/None, Extra Information: Switzerland, None]      | [Ordinal/Empty, Ordinal/Empty, None/None, None, None]                  | [Numerical/Empty, Event/Empty, None/None, None, None]              | [Time/Empty, Others/Empty, None/None, None, None]                                                                                                           |
+| [-]                                                                              | [String/Empty, Location/Empty, None/None, Extra Information: United Kingdom, None]   | [Ordinal/Empty, Ordinal/Empty, None/None, None, None]                  | [Numerical/Empty, Event/Empty, None/None, None, None]              | [Time/Empty, Others/Empty, None/None, None, None]                                                                                                           |
+| [-]                                                                              | [String/Empty, Location/Empty, None/None, Extra Information: United Kingdom, None]   | [Ordinal/Empty, Ordinal/Empty, None/None, None, None]                  | [String/Empty, Event/Empty, None/None, None, None]              | [Time/Empty, Others/Empty, None/None, None, None]                                                                                                           |
+| [-]                                                                              | [-]                                       | [Ordinal/Ordinal, Ordinal/Ordinal, None/None, None, absolute difference:3:] | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:0.48:s:<10.29s - 10.77s>= 0.48s]                                         |
+| [String/String, Event/Event, None/None, None, semantically similar: World Championships in Athletics -> World Champs in Athletics]     | [-]                                       | [-]                     | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:0.57:s:<37.47s - 36.90s>= 0.57s]                                         |
+| [-]                                                                              | [-]                                       | [-]                     | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:0.36:s:<10.13s - 10.49s>= 0.36s]                                         |
+| [-]                                                                              | [-]                                       | [Ordinal/Ordinal, Ordinal/Ordinal, None/None, None, absolute difference:2:] | [-]                   | [Time/Time, Others/Others, None/None, None, absolute difference:0.29:s:<20.35s - 20.64s>= 0.29s]                                         |
+
+Example 4: 
+
+Input table =
+
+| countryOfCitizenship.T1/countryOfCitizenship.T2    | placeOfBirth.T1/placeOfBirth.T2                         | Alive.T1/Living.T2 | hobbies.T1/hobbies.T2                                  |
+|-----------------------------------------------------|---------------------------------------------------------|--------------------|-------------------------------------------------------|
+| United States of America/US                         | -                                                        | Yes/Yeah           | ['Reading', 'Writing', 'Traveling']/Reading, Hiking    |
+| United States of America/US                         | Kapiolani Medical Center for Women and Children, Honolulu/Honolulu | Yes/Nope           | ['Basketball', 'Reading', 'Writing']/Basketball, Writing |
+| United States of America/US                         | -                                                        | Yes/Yeah           | ['Golf', 'Running']/Running, Swimming                 |
+| United States of America/US                         | -                                                        | Yes/Yeah           | ['Traveling', 'Gardening']/Traveling, Painting        |
+| -                                                  | -                                                        | Yes/Nah            | ['Cooking', 'Traveling']/Cooking, Painting            |
+| -/US                         | Edgewater Hospital/Chicago                                | yes/no             | ['Reading', 'Chess']/Reading, Chess                   |
+| -/US                         | -                                                        | yes/Nope           | ['Writing', 'Researching']/Writing, Researching       |
+| United States of America/US                         | New York City, Manhattan/New York City                    | yes/Nah            | ['Reading', 'Writing', 'Photography']/Reading, Photography |
+
+Output table =
+| countryOfCitizenship.T1/countryOfCitizenship.T2    | placeOfBirth.T1/placeOfBirth.T2                         | Alive.T1/Living.T2 | hobbies.T1/hobbies.T2                                  |
+|-----------------------------------------------------|---------------------------------------------------------|--------------------|-------------------------------------------------------|
+| [String/String, Nationality/Nationality, None/None, None, abbreviated string:United States of America -> US] | [-]                         | [Boolean/Boolean, Others/Others, None/None, None, logically similar: Yes -> Yeah]           | [List/List, Others/Others, None/None, None, list difference:['Reading', 'Writing', 'Traveling']:['Reading', 'Hiking']:['Writing', 'Traveling', 'Hiking']]    |
+| [String/String, Nationality/Nationality, None/None, None, abbreviated string:United States of America -> US] | [String/String, Location/Location, None/None, Missing Information:Kapiolani Medical Center for for Women and Children, None] | [Boolean/Boolean, Others/Others, None/None, None, logically different: Yes -> Nope]           | [List/List, Others/Others, None/None, None, list difference:['Basketball', 'Reading', 'Writing']:['Basketball', 'Writing']:['Reading']] |
+| [String/String, Nationality/Nationality, None/None, None, abbreviated string:United States of America -> US] | [-]                         | [Boolean/Boolean, Others/Others, None/None, None, logically similar: Yes -> Yeah]           | [List/List, Others/Others, None/None, None, list difference:['Golf', 'Running']:['Running', 'Swimming']:['Golf', 'Swimming']]                 |
+| [String/String, Nationality/Nationality, None/None, None, abbreviated string:United States of America -> US] | [-]                         | [Boolean/Boolean, Others/Others, None/None, None, logically similar: Yes -> Yeah]           | [List/List, Others/Others, None/None, None, list difference:['Traveling', 'Gardening']:['Traveling', 'Painting']:['Gardening', 'Painting']]        |
+| [-]                                                  | [-]                         | [Boolean/Boolean, Others/Others, None/None, None, logically different: Yes -> Nah]            | [List/List, Others/Others, None/None, None, list difference:['Cooking', 'Traveling']:['Cooking', 'Painting']:['Traveling', 'Painting']]            |
+| [Empty/String, Nationality/Nationality, None/None, Missing Information: US, None]                         | [String/String, Facility/Location, None/None, None, None]                                | [Boolean/Boolean, Others/Others, None/None, None, logically different: yes -> no]             | [List/List, Others/Others, None/None, None, list difference:['Reading', 'Chess']:['Reading', 'Chess']:[]]                   |
+| [Empty/String, Nationality/Nationality, None/None, Missing Information: US, None]                         | [-]                         | [Boolean/Boolean, Others/Others, None/None, None, logically different: yes -> Nope]           | [List/List, Others/Others, None/None, None, list difference:['Writing', 'Researching']:['Writing', 'Researching']:[]]       |
+| [String/String, Nationality/Nationality, None/None, None, abbreviated string:United States of America -> US] | [String/String, Location/Location, None/None, Missing Information: Manhattan, None, other sting difference]                    | [Boolean/Boolean, Others/Others, None/None, None, logically different: yes -> Nah]            | [List/List, Others/Others, None/None, None, list difference:['Reading', 'Writing', 'Photography']:['Reading', 'Photography']:['Writing']] |
+
+
+
+
+*VERY IMPORTANT* -
+
+Your answer tuples should be of length 5 if there is content else if it is empty it should be a single dash [-]. You cannot report tuples of length other than 5.
