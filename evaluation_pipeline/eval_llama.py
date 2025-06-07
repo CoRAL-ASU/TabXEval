@@ -17,7 +17,7 @@ def ask_chatgpt(text: str, prompt_path=None):
     _ = load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     client = OpenAI(base_url="https://model-4w5z66pw.api.baseten.co/environments/production/sync/v1",
-                    api_key="UDKtz4ud.RFYYtPraNu7BhFQxfN4Nivo9klis31de",
+                    api_key="",
                     )
     if prompt_path and text:
         with open(prompt_path, 'r') as file:
