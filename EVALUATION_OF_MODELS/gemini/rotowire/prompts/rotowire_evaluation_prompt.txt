@@ -1,0 +1,121 @@
+Act as a data extraction expert. Convert the following text into a structured table by following these steps:  
+1. **Determine Headers**: Define table columns based on the text provided.
+2. **Extract Values**: Populate rows by mapping entities to headers.  
+3. **Format**: Output two markdown tables. The first table should contain data about Team and the second table should contain data about P-layer.
+
+The structure of your response should be as follows:
+```
+##Team Table
+| Header1 | Header2 | Header3 | Header4 | Header5 |
+|---------|---------|---------|---------|---------|
+| Value1  | Value2  | Value3  | Value4  | Value5  |
+...
+
+##Player Table
+| Header1 | Header2 | Header3 | Header4 | Header5 |
+|---------|---------|---------|---------|---------|
+| Value1  | Value2  | Value3  | Value4  | Value5  |
+...
+
+```
+
+Below are some examples:
+
+EXAMPLE 1:
+Input Text:
+The Celtics saw great team play in their Christmas Day win, and it translated to the box score. Boston had 25 assists to just 11 for New York, and the team committed just six turnovers on the night. All-Star Isaiah Thomas once again led Boston with 27 points, while star center Al Horford scored 15 points and stuffed the stat sheet with seven rebounds, five assists, three steals, and two blocks. Third-year point guard Marcus Smart impressed off the bench, dishing seven assists and scoring 15 points including the game - winning three - pointer. New York, meanwhile, saw solid play from its stars. Sophomore big man Kristaps Porzingis had 22 points and 12 rebounds as well as four blocks. All-Star Carmelo Anthony had 29 points, 22 of which came in the second half. Point guard Derrick Rose also had 25 points in one of his highest - scoring outings of the season.
+
+
+Output Tables:
+##Team Table 
+
+| Team      | Number of team assists |
+|-----------|------------------------|
+| Knicks    | 11                     |
+| Celtics   | 25                     |
+
+##Player Table
+| Player               | Assists | Blocks | Points | Total rebounds | Steals |
+|----------------------|---------|--------|--------|----------------|--------|
+| Al Horford           | 5       |        | 15     | 7              | 3      |
+| Isaiah Thomas        |         |        | 27     |                |        |
+| Marcus Smart         | 7       |        | 15     |                |        |
+| Carmelo Anthony      |         | 1      | 29     |                | 1      |
+| Kristaps Porzingis   |         |        | 22     | 12             |        |
+| Derrick Rose         |         |        | 25     |                |        |
+
+EXAMPLE 2:
+Input Text:
+The Phoenix Suns (39 - 38) escaped with an 87 - 85 win over the Utah Jazz (34 - 42). Rodney Hood missed the game - winning three - pointer at the buzzer. He was potentially fouled, but the official ruled otherwise. The Suns moved to three and a half games behind the Oklahoma City Thunder for the final playoff spot with five games remaining. Gerald Green scored 24 points in just 22 minutes for the first time since November 26th. After three straight double - figure scoring games, rookie T.J. Warren was limited to four points with Green putting on a show. Brandan Wright continues to start for the injured Alex Len, supplying 14 points, three rebounds, four blocks, three steals and one assist in 33 minutes. Trey Burke was dealing with back issues and didn’t play. Dante Exum was joined in the starting lineup by fellow rookie Rodney Hood, who was cleared of concussion symptoms after missing the previous game. Hood replaced Joe Ingles in the starting lineup and scored 17 points. He entered the game shooting 47 percent from the field since the All-Star break. Gordon Hayward scored 21 points on 18 shots and Rudy Gobert, potential Defensive Player of the Year, provided eight points, 15 rebounds, two assists, one steal and one block in 38 minutes. The Suns engage in a four - game road trip Tuesday beginning against the Atlanta Hawks. The Jazz conclude a two - game, two - day road trip when they play the Sacramento Kings on Sunday before hosting them three days later.
+
+
+Output Tables:
+##Team Table
+| Team   | Losses | Total points | Wins |
+|--------|--------|--------------|------|
+| Suns   | 38     | 87           | 39   |
+| Jazz   | 42     | 85           | 34   |
+
+
+##Player Table
+| Player           | Assists | Blocks | 3-pointers made | Field goals attempted | Minutes played | Points | Total rebounds | Steals |
+|------------------|---------|--------|------------------|-----------------------|----------------|--------|----------------|--------|
+| Gordon Hayward   |         |        | 18               |                       | 21             |        |                |        |
+| Rudy Gobert      | 2       | 1      |                  |                       | 38             | 8      | 15             | 1      |
+| Rodney Hood      |         |        |                  |                       |                | 17     |                |        |
+| Brandan Wright   | 1       | 4      |                  |                       | 33             | 14     | 3              | 3      |
+| TJ Warren        |         |        |                  |                       |                | 4      |                |        |
+| Gerald Green     |         |        | 3                |                       | 22             | 24     |                |        |
+
+EXAMPLE 3:
+
+Input Text:
+The Milwaukee Bucks (40 - 40) defeated the Brooklyn Nets (47 - 43) 96 - 73 on Sunday in Milwaukee. After holding just a two point lead after the first half, the Bucks used a monster second half to turn this game into a route, outscoring the Nets by 12 in the third period and nine in the fourth. The victory not only brought Milwaukee back to .500, but it also clinched them a playoff birth after holding the worst record in the NBA last season. Ersan Ilyasova led the way for the Bucks, scoring 21 points (8 - 12 FG, 3 - 6 3Pt), 11 of which came in the third quarter, and grabbing five rebounds in 28 minutes. This comes after Ilyasova scored just eight points in his previous two outings combined. Khris Middleton scored 16 points on 7 - of - 11 shooting to along with seven assists and four rebounds in 30 minutes of action. Giannis Antetokounmpo was not far behind, recording 13 points on 6 - of - 14 shooting, nine rebounds and seven assists in 30 minutes. O.J. Mayo scored 17 points (6 - 13 FG, 3 - 5 3Pt) in 20 minutes off the bench, while Michael Carter-Williams scored 12 to round out the five Milwaukee players who scored in double figures. The Bucks recorded 30 total assists on 41 made field goals, and the win leaves them as the No. 6 seed in the Eastern Conference, which is likely where they will stay as the season comes to an end. The loss is a big one for the Nets, as they are still fighting for their playoff lives, and this loss leaves them with just a half - game lead over the Pacers for the eighth and final playoff spot in the East with two games left on their schedule. Only one Brooklyn starter scored in double figures, as Brook Lopez recorded a double - double of 12 points (3 - 8 FG, 6 - 7 FT) and 10 rebounds in 31 minutes. Off the bench, both Mason Plumlee and Jarrett Jack scored 11 points in 17 and 24 minutes respectively. Deron Williams struggled mightily shooting the ball, going just 1 - for - 11 from the field en route to scoring just four points in 33 minutes. He was, however, able to record seven assists and seven rebounds. As a team, the Nets shot a dreadful 33 percent from the field and 17 percent from three, all while recording 21 turnovers to just 17 assists. Up next, the Bucks will travel to Philadelphia Monday to take on the 76ers, while the Nets head home to Chicago Monday to play the Bulls with their playoff hopes in the balance.
+
+
+Output Tables:
+##Team Table
+| Team                    | Number of team assists | Percentage of 3 points | Percentage of field goals | Losses | Total points | Points in 2nd quarter | Points in 3rd quarter | Turnovers | Wins |
+|-------------------------|------------------------|------------------------|---------------------------|--------|--------------|-----------------------|-----------------------|-----------|------|
+| Bucks                   | 30                     | 30                     |                           | 40     | 96           | 17                   | 30                   |           | 40   |
+| Nets                    | 17                     | 17                     | 33                        |        | 73           |                       |                       | 21        |      |
+
+##Player Table
+| Player                   | Assists | Blocks | 3-pointers attempted | 3-pointers made | Field goals attempted | Field goals made | Free throws attempted | Free throws made | Minutes played | Personal fouls | Points | Total rebounds | Turnovers |
+|--------------------------|---------|--------|-----------------------|-----------------|------------------------|------------------|------------------------|------------------|----------------|----------------|--------|----------------|-----------|
+| Brook Lopez              |         | 1      |                       |                 | 8                      | 3                | 7                      | 6                | 31             |                | 12     | 10             | 1         |
+| Deron Williams           | 7       |        |                       |                 | 11                     | 1                |                        |                  | 33             |                | 4      | 7              |           |
+| Mason Plumlee            |         |        |                       |                 |                        |                  |                        |                  | 17             |                | 11     |                |           |
+| Jarrett Jack             |         |        |                       |                 |                        |                  |                        |                  | 24             |                | 11     |                |           |
+| Giannis Antetokounmpo    | 7       |        |                       |                 | 14                     | 6                |                        |                  | 30             |                | 13     | 9              |           |
+| Ersan Ilyasova           |         |        | 6                     | 3               | 12                     | 8                | 2                      | 2                | 28             | 2              | 21     | 5              |           |
+| Khris Middleton          | 7       |        |                       |                 | 11                     | 7                |                        |                  | 30             |                | 16     | 4              |           |
+| Michael Carter-Williams  | 5       |        |                       |                 |                        |                  |                        |                  |                |                | 12     |                |           |
+| O.J. Mayo                |         |        | 5                     | 3               | 13                     | 6                |                        |                  | 20             |                | 17     |                |           |
+
+EXAMPLE 4:
+
+Input Text:
+The Toronto Raptors (52 - 25) defeated the Charlotte Hornets (44 - 33) 96 - 90 on Tuesday. The Hornets came in to the contest with a playoff spot in hand, while the Raptors were trying to keep their faint chances of catching the top - seeded Cleveland Cavaliers alive. Charlotte, which had won five of their last seven games, and five of their last seven road contests as well, gave Toronto all they could handle until the closing seconds after mounting a furious rally in the fourth quarter. The vistors had entered the final 12 minutes trailing 75 - 59, but a strong effort by Jeremy Lin, who started for the injured Nicolas Batum (knee), helped key the comeback. The Hornets got as close as 93 - 88 with 37 seconds remaining after Kemba Walker successfully converted an and - one, but DeMar DeRozan and Corey Joseph were able to sink two key free throws apiece to seal the win. The Hornets were led by Lin's 21 points, which he supplemented with seven assists, four rebounds and a steal. Marvin Williams followed with 15 points, six rebounds, an assist and two steals. Walker was next with 11 points, two rebounds, four assists, a steal and a block. Courtney Lee managed 11 points, two rebounds, two assists, a steal and a block. Frank Kaminsky III paced the bench with nine points, six rebounds, an assist and a block, while Al Jefferson notably hauled in 11 boards in 20 minutes as a reserve. Charlotte is in third place in the Eastern Conference's Southeast Division, and is slotted in the sixth seed as well. They head to New York to take on the Knicks on Wednesday. Toronto's attack was spearheaded by DeRozan, who poured in a game - high 26 points and added seven rebounds, six assists and a steal. Kyle Lowry tallied 21 points, six assists, four rebounds and a block. Jonas Valanciunas posted a 12 - point, 12 - rebound double - double, and recorded three blocks. Joseph paced the reserves with 11 points, four rebounds, two assists and a steal. Patrick Patterson was productive off the bench as well, managing 10 points, three rebounds, three assists and two steals. The Raptors remain atop the Eastern Conference's Atlantic Division, and due to a Cavs win on Tuesday, remain 4 games back of the top spot in the conference. They head to Atlanta to take on the Hawks on Thursday.
+
+Output Tables:
+##Team Table
+| Team          | Losses | Total points | Points in 1st quarter | Wins |
+|---------------|--------|--------------|-----------------------|------|
+| Raptors       | 25     | 96           | 26                    | 52   |
+| Hornets       | 33     | 90           |                       | 44   |
+
+##Player Table
+| Player            | Assists | Blocks | Defensive rebounds | 3-pointers attempted | 3-pointers made | Field goal percentage | Free throws attempted | Free throws made | Minutes played | Offensive rebounds | Personal fouls | Points | Total rebounds | Steals | Turnovers |
+|-------------------|---------|--------|--------------------|-----------------------|------------------|-----------------------|-----------------------|------------------|----------------|--------------------|----------------|--------|----------------|--------|-----------|
+| Courtney Lee      | 2       | 1      |                    |                       |                  |                       |                       |                  |                |                    |                | 11     | 2             | 1      |           |
+| Marvin Williams   | 1       |        |                    |                       |                  |                       |                       |                  |                |                    |                | 15     | 6             | 2      |           |
+| Jeremy Lin        | 7       |        |                    |                       |                  |                       |                       |                  |                |                    |                | 21     | 4             | 1      |           |
+| Kemba Walker      | 4       | 1      | 2                  |                       | 1                |                       |                       | 2                |                |                    |                | 11     | 2             | 1      | 1         |
+| Al Jefferson      |         |        |                    |                       |                  |                       |                       |                  | 20             |                    |                |        | 11            |        |           |
+| Frank Kaminsky    | 1       | 1      |                    |                       |                  |                       |                       |                  |                |                    |                | 9      | 6             |        |           |
+| Jonas Valanciunas |         | 3      |                    |                       |                  |                       |                       |                  |                |                    |                | 12     | 12            |        |           |
+| DeMar DeRozan     | 6       |        |                    | 2                     | 1                | 37                    |                       |                  |                |                    |                | 26     | 7             | 1      | 1         |
+| Kyle Lowry        | 6       | 1      |                    |                       |                  |                       |                       |                  |                |                    |                | 21     | 4             |        |           |
+| Patrick Patterson | 3       |        |                    |                       |                  |                       |                       |                  |                |                    |                | 10     | 3             | 2      |           |
+| Cory Joseph       | 2       |        |                    | 2                     | 1                |                       | 2                     | 2                |                | 1                  | 2              | 11     | 4             | 1      |           |

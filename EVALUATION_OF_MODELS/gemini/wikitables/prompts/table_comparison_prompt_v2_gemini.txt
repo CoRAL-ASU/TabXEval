@@ -1,0 +1,198 @@
+You are an expert in comparing any two given entities. 
+
+Your task is to find the exact difference between value 1 and value 2.
+You are given a table with each cell having value 1 and value 2 seperated by '/' in the format -> value 1/value 2. 
+Also the first row of the table is the column header in the same format as above -> Column Header 1/ Column Header 2
+Column Header 1, Value 1 and Column Header 2, Value 2 represents entities from two different tables, Table 1 and Table 2 respectively and are split by '/'. 
+If the cell has no values and represented by '-', skip the cell and do not perform any operations defined below.
+If BOTH parts of cells are empty then and then only the tuple would be '[-]'
+Using Column Headers and values as context, we need to construct a new tuple for the 'Values' entity as Follows:
+1. **Data Type**: Determine the data type for the values, based on Column headers as well as Values. Take table context also in consideration. Only choose ONE of the described data types.
+        a. Numerical, 
+        b. string, 
+        c. Date,
+        d. Others,
+        e. Time,
+        f. Empty -> Choose this type if the part of cell is empty.
+
+2. **Entity**: Recognize the entity of the values. For recognizing the entity type, you also need to take into consideration the context of table and column header of the cell. In this way you can choose more accurately the entity type. Only choose ONE of the described entities.
+        a. Person
+            Refers to names of individuals.
+            Example: "Albert Einstein", "Marie Curie", "A. Madison".
+        b. Organization
+            Includes entities such as companies, institutions, government bodies, and other groups.
+            Example: "Google", "United Nations", "NASA".
+        c. Location
+            Geographic locations, such as countries, cities, landmarks, or natural places.
+            Example: "Paris", "Mount Everest", "Amazon Rainforest", "US".
+        d. Date
+            Any temporal reference to calendar dates. It could also be just a year
+            Example: "January 1, 2024", "20th century", "2003".
+        e. Percent
+            Expressions of percentages.
+            Example: "25%", "three-quarters".
+        f. Facility
+            Refers to man-made structures, buildings, or large infrastructure.
+            Example: "Eiffel Tower", "Golden Gate Bridge".
+        g. Event
+            Named occurrences or events.
+            Example: "World War II", "Olympics 2024".
+        h. Product
+            Commercial or consumer products, including devices, software, or other goods.
+            Example: "iPhone 14", "Tesla Model S".
+        i. Work of Art
+            Titles of creative works such as books, movies, paintings, or songs.
+            Example: "The Great Gatsby", "Mona Lisa".
+        j. Language
+            References to languages.
+            Example: "English", "Mandarin".
+        k. Nationality/Religious/Political Group
+            Groups associated with ethnicity, nationality, religion, or politics.
+            Example: "American", "Christian", "Democrats".
+        l. Ordinal
+            Words or numbers denoting order.
+            Example: "First", "3rd".
+        m. Cardinal
+            Numerical values that are not dates, times, or percentages.
+            Example: "One hundred", "2,000".	
+        n. Others
+            Any entity that does not fit into the above categories.
+            Example: "Unknown", "N/A".
+
+3. Unit: Determine the unit of values.If the units are not explicitly metioned in the values, infere the Units based on the Column headers. 
+4. Missing/Extra Information: If there is any missing or extra value.
+        a. Missing Information: If there is any missing information in the cell, provide the missing information. 
+            Example of Missing Information: "New York, US/ New York" -> [String/String, Location/Location, None/None, Missing Information: US, other string difference]
+        b. Extra Information: If there is any extra information in the cell, provide the extra information.
+            Example of Extra Information: "New York/ New York, US" -> [String/String, Location/Location, None/None, Extra Information: US, other string difference]
+
+5. Difference: To Recognize the exact difference use all the above factor along with the types below:
+        a. For numerical values, if they are in same unit provide absolute difference.For different units, *First convert them to same unit as first part of cell* and then take abosolute difference of 1st converted part of cell and 2nd part of cell(provide explanation with calculation of conversion and calculation of difference in the tuple itself, see format ahead). Format to report numeric difference-> "<difference_type>:<difference(this should be a number with characters being only digits):<unit of the difference>:<explanation for conversion(if any)>".
+            Example of "10m/798cm"->[Numerical/Numerical, Others/Others, m/cm, None, absolute difference:2.02:m:Converted 798cm to 7.98m, Now difference is <10m- 7.98m>= 2.02m] 
+            Another Example of Numerical values "$30.1 million/$38.1 million"->[Numerical/Numerical, Money/Money, $/$, None, absolute difference: 38.1 million - 30.1 million = 8 million] 
+        b. For Dates, exact differences between the dates *COMPULSORY in DAYS*. Format to report date difference-> "<difference_type>:<difference(this should be a number)>:<unit(days)>:<explanation for conversion from other units to days>"
+        c. For strings, format to report string difference->"<difference type>:<explanation of difference>". For strings choose difference from below types appropriately.
+                i. spelling mistake
+                    Example: "Juice -> juce, Facility -> Facitily"
+                ii. abbreviated string
+                    Example: "United States -> US, Joe Biden -> J. Biden"
+                iii. semantically different, where strings are unrelated and do not match or if there is information loss.
+                    Example: "dragon->dog, america -> asia, John Bently -> A. Bently". Here you can see abbreviated form is not correct so they are semantically different.
+                iv. semantically similar, where strings are highly related and almost match
+                    Example: "Champion -> Champs, House-> Home"
+                iv. other sting difference
+        d. For Times, exact difference between time should *COMPULSORY be in SECONDS* only. You need to *convert both parts into SECONDS first and then get the absolute difference. Format to report time difference,  "<difference_type>:<difference(this should be a decimal number)>:seconds:<explanation for conversion from other units to seconds>"
+            Example of Time cell "23 μs/6.4 ms" -> [Time/Time, Others/Others, μs/ms, None, absolute difference:0.0064:s:Converted 23 μs to 0.000023s, Now difference is <0.000023s - 0.0064s>= 0.006377s]
+            Another example of Time cell "3:00 PM/12:00 AM" -> [Time/Time, Others/Others, PM/AM, None, absolute difference:32400:s:Converted 3:00 PM to 15:00:00, Now difference is <15:00:00 - 12:00:00> = 10800s]
+            Another example of Time cell "15 min/1.3 h" -> [Time/Time, Others/Others, min/h, None, absolute difference:4620:s:Converted 15 min to 900s and 1.3 h to 4680s, Now difference is <900s - 4680s> = 3780s]
+            As you can see that the cell values are converted to seconds and then the difference is calculated.
+        Using the different types of "Differences", Recognize the exact value for difference
+
+Generate a Table corresponding to the input table, which contains tuple of all the above factors described- 
+
+
+EXAMPLE : Below is the given examples - 
+
+Example 1 :
+
+Input table =
+| Field / Field       | Value / Value                                                                   |
+|---------------------|---------------------------------------------------------------------------------|
+| portals / -         | lds / -                                                                         |
+| called by / -       | may anderson / -                                                                |
+| birth place / birth place | taylorsville, utah territory, united states / taylorsville, utah territory |
+| resting place / burial place | salt lake city cemetery / salt lake city cemetery                      |
+| parents / -         | benjamin e. harker harriet bennion / -                                          |
+| death place / death place | washington, d.c., united states / washington, d.c.                         |
+| birth name / -      | edna harker / -                                                                 |
+| start date / -      | 1929 / -                                                                        |
+| predecessor / -     | isabelle s. ross / -                                                            |
+| end date / -        | 1933 / -                                                                        |
+| alma mater / -      | brigham young university university of california, berkeley american university / - |
+| position or quorum / - | second counselor in the general presidency of the primary / -                    |
+| birth date / birth date | 11 april 1881 / april 11, 1881                                                |
+| death date / death date | 29 april 1942 / april 29, 1942                                                  |
+| - / religion        | - / church of jesus christ of latter-day saints                                |
+| - / occupation      | - / teacher, lds church leader                                                  |
+
+
+Output table = 
+
+```
+| Field / Field | Value / Value |
+| --- | --- |
+| [String/Empty, Others/Empty, None/None, Missing Information: portals, other string difference] | [String/Empty, Organization/Empty, None/None, Missing Information: lds, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: called by, other string difference] | [String/Empty, Person/Empty, None/None, Missing Information: may anderson, other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Location/Location, None/None, Missing Information: united states, other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Facility/Facility, None/None, None, semantically similar] |
+| [String/Empty, Others/Empty, None/None, Missing Information: parents, other string difference] | [String/Empty, Person/Empty, None/None, Missing Information: benjamin e. harker harriet bennion, other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Location/Location, None/None, Missing Information: united states, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: birth name, other string difference] | [String/Empty, Person/Empty, None/None, Missing Information: edna harker, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: start date, other string difference] | [Date/Empty, Date/Empty, None/None, Missing Information: 1929, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: predecessor, other string difference] | [String/Empty, Person/Empty, None/None, Missing Information: isabelle s. ross, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: end date, other string difference] | [Date/Empty, Date/Empty, None/None, Missing Information: 1933, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: alma mater, other string difference] | [String/Empty, Organization/Empty, None/None, Missing Information: brigham young university university of california, berkeley american university, other string difference] |
+| [String/Empty, Others/Empty, None/None, Missing Information: position or quorum, other string difference] | [String/Empty, Others/Empty, None/None, Missing Information: second counselor in the general presidency of the primary, other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [Date/Date, Date/Date, None/None, None, absolute difference:0:days:] |
+| [Empty/String, Empty/Others, None/None, Missing Information: religion, other string difference] | [Empty/String, Empty/Organization, None/None, Missing Information: church of jesus christ of latter-day saints, other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: occupation, other string difference] | [Empty/String, Empty/Others, None/None, Missing Information: teacher, lds church leader, other string difference] |
+```
+
+
+Example 2 :
+
+Input table =
+
+| Field / Field                 | Value / Value                               |
+|-------------------------------|---------------------------------------------|
+| birth place / birth place     | france / rhèges                             |
+| residence / -                 | france / -                                  |
+| birth date / birth date       | 13 august 1945 / 25 august 1945             |
+| constituency / constituency   | aube canton de méry-sur-seine / Aube department |
+| - / nationality             | - / french                                  |
+| - / canton                    | - / Méry-sur-Seine                          |
+| - / political party         | - / Independent                             |
+| - / senate election years   | - / 1989, 1998, 2008                        |
+
+Output table = 
+
+```
+| Field / Field | Value / Value |
+|---|---|
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Location/Location, None/None, None, semantically different] |
+| [String/Empty, Others/Empty, None/None, Missing Information: residence, other string difference] | [String/Empty, Location/Empty, None/None, Missing Information: france, other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [Date/Date, Date/Date, None/None, None, absolute difference:12:days:] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Location/Location, None/None, Missing Information: canton de méry-sur-seine, other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: nationality, other string difference] | [Empty/String, Empty/Nationality/Religious/Political Group, None/None, Missing Information: french, other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: canton, other string difference] | [Empty/String, Empty/Location, None/None, Missing Information: Méry-sur-Seine, other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: political party, other string difference] | [Empty/String, Empty/Nationality/Religious/Political Group, None/None, Missing Information: Independent, other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: senate election years, other string difference] | [Empty/String, Empty/Date, None/None, Missing Information: 1989, 1998, 2008, other string difference] |
+```
+
+Example 3 :
+
+Input table =
+| Field / Field           | Value / Value                                                                                                             |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| death place / death place | sheffield, england / sheffield                                                                                           |
+| name / name             | jack reynolds / john "jack" reynolds                                                                                    |
+| fullname / name          | john reynolds / john "jack" reynolds                                                                                                        |
+| - / clubs               | - / west bromwich albion, aston villa, celtic, southampton                                                             |
+| - / international appearances | - / ireland (5), england (8)                                                                                           |
+| - / honours             | - / FA Cup (1892 with West Bromwich Albion), English League titles (3 with Aston Villa), FA Cups (2 with Aston Villa) |
+
+Output table =
+
+| Field / Field | Value / Value |
+|---|---|
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Location/Location, None/None, Extra Information: england, other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Person/Person, None/None, Extra Information: john "jack", other string difference] |
+| [String/String, Others/Others, None/None, None, semantically similar] | [String/String, Person/Person, None/None, Extra Information: "jack", other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: clubs, other string difference] | [Empty/String, Empty/Organization, None/None, Missing Information: west bromwich albion, aston villa, celtic, southampton, other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: international appearances, other string difference] | [Empty/String, Empty/Nationality/Religious/Political Group, None/None, Missing Information: ireland (5), england (8), other string difference] |
+| [Empty/String, Empty/Others, None/None, Missing Information: honours, other string difference] | [Empty/String, Empty/Event, None/None, Missing Information: FA Cup (1892 with West Bromwich Albion), English League titles (3 with Aston Villa), FA Cups (2 with Aston Villa), other string difference] |
+
+*VERY IMPORTANT* -
+
+YOUR ANSWER TUPLES SHOULD BE OF LENGTH 5 IF THERE IS CONTENT TO COMPARE ELSE IF IT IS EMPTY IT SHOULD BE A SINGLE DASH [-]. YOU CANNOT REPORT TUPLES OF LENGTH OTHER THAN 5. THE RESPONSE SHOULD ONLY BE A MARKDOWN TABLE.
