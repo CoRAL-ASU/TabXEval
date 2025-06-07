@@ -62,11 +62,14 @@ The framework supports evaluation of multiple models:
 If you use this framework in your research, please cite our paper:
 
 ```bibtex
-@article{tabxeval2024,
-  title={TabXEval: A Comprehensive Framework for Evaluating Table Extraction Models},
-  author={Your Name and Co-authors},
-  journal={arXiv preprint},
-  year={2024}
+@misc{pancholi2025tabxevalbadtableexhaustive,
+      title={TabXEval: Why this is a Bad Table? An eXhaustive Rubric for Table Evaluation}, 
+      author={Vihang Pancholi and Jainit Bafna and Tejas Anvekar and Manish Shrivastava and Vivek Gupta},
+      year={2025},
+      eprint={2505.22176},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.22176}, 
 }
 ```
 
