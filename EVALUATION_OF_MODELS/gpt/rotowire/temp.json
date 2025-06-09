@@ -1,0 +1,10 @@
+{
+    "1402": [
+        "| Player | Assists | Defensive rebounds | Field goals attempted | Minutes played | Points | Total rebounds |\n| --- | --- | --- | --- | --- | --- | --- |\n| Robert Covington |  |  |  |  | 16 |  |\n| Ersan Ilyasova |  |  |  |  | 15 |  |\n| T.J. McConnell | 9 | 9 | 9 |  |  | 10 |\n| Nik Stauskas |  |  |  |  | 10 |  |\n| Nerlens Noel |  |  |  | 10 |  |  |\n| Marcus Morris |  |  |  |  | 28 |  |\n| Andre Drummond |  |  |  |  | 14 | 14 |",
+        "| Player           | Assists | Points | Total rebounds | Minutes played |\n|------------------|---------|--------|----------------|----------------|\n| Jahlil Okafor    |         | 26     |                |                |\n| T.J. McConnell   | 9       |        | 10             |                |\n| Robert Covington |         | 16     |                |                |\n| Ersan Ilyasova   |         | 15     |                |                |\n| Nik Stauskas     |         | 10     |                |                |\n| Nerlens Noel     |         |        |                | 10             |\n| Marcus Morris    |         | 28     |                |                |\n| Andre Drummond   |         | 14     | 14             |                |\n| Tobias Harris    |         |        |                |                |\n| Darrun Hilliard  |         |        |                |                |\n```"
+    ],
+    "1403": [
+        "| Team | Number of team assists | Percentage of field goals | Losses | Total points | Wins |\n| --- | --- | --- | --- | --- | --- |\n| Hawks | 14 | 38 | 25 | 90 | 32 |\n| Heat | 30 | 40 |  | 108 |  |",
+        "| Team   | Losses | Total points | Wins | Field goal percentage | Total rebounds | Number of team assists |\n|--------|--------|--------------|------|-----------------------|----------------|------------------------|\n| Heat   | 32     | 108          | 25   | 40                    | 54             | 30                     |\n| Hawks  | 25     | 90           | 32   | 38                    | 45             |                        |"
+    ]
+}
