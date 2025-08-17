@@ -1,0 +1,15 @@
+**TASK**
+You are provided with a Markdown table. Your objective is to generate three new Markdown tables that preserve the original data and meaning but are visually and structurally different. To achieve this, apply a random selection of the following perturbations to the table:
+1. Column Abbreviation: Shorten or abbreviate the values where possible.
+2. Transpose the Table: Switch rows and columns.
+3. Semantic Rephrasing: Change the column header text to synonymous phrases without altering the meaning.
+4. Row-Column Swap: Swap the order of rows and columns (apply to at least two different parts).
+5. Unit Conversion: For numerical values, change the units (e.g., converting meters to kilometers, or seconds to minutes) while ensuring the numerical data remains equivalent.
+
+**Instructions**
+1. Apply these perturbations randomly to create three distinct Markdown tables.
+2. Ensure that none of the original information is falsified or lost.
+3. The output should consist of three separate Markdown-formatted tables, each reflecting a unique perturbation combination.
+
+**OUTPUT**
+3 Tables of the markdown format in strings.
