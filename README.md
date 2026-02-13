@@ -3,6 +3,8 @@
 [![Paper](https://img.shields.io/badge/Paper-ACL%20Anthology-blue)](https://aclanthology.org/2025.findings-acl.1176/)
 [![arXiv](https://img.shields.io/badge/arXiv-2505.22176-b31b1b.svg)](https://arxiv.org/abs/2505.22176)
 [![Project Page](https://img.shields.io/badge/Project-Page-green)](https://coral-lab-asu.github.io/tabxeval/)
+[![Slides](https://img.shields.io/badge/Slides-PDF-orange)](https://coral-lab-asu.github.io/presentation_docs/TabXEval_presentation.pdf)
+[![Poster](https://img.shields.io/badge/Poster-PDF-purple)](./static/pdf/TabXEval_Poster.pdf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
