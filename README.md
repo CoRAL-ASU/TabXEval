@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
-This repository contains code and resources for **TabXEval**, an **exhaustive and explainable** evaluation framework for table tasks (e.g., table extraction / table generation). TabXEval is built around a **rubric-based** view of table quality that captures both **structural** and **content-level** discrepancies that standard metrics often miss. :contentReference[oaicite:1]{index=1}
+This repository contains code and resources for **TabXEval**, an **exhaustive and explainable** evaluation framework for table tasks (e.g., table extraction / table generation). TabXEval is built around a **rubric-based** view of table quality that captures both **structural** and **content-level** discrepancies that standard metrics often miss. 
 
 ---
 
@@ -16,17 +16,17 @@ This repository contains code and resources for **TabXEval**, an **exhaustive an
 
 ![arch](static/images/overview.png)
 
-Evaluating predicted tables is tricky: two tables can be “close” in content but differ in subtle (and important) ways—headers, alignment, row/column structure, formatting, or small semantic mismatches. Many existing automatic metrics under-diagnose these issues, making it hard to compare systems or debug failures. :contentReference[oaicite:2]{index=2}
+Evaluating predicted tables is tricky: two tables can be “close” in content but differ in subtle (and important) ways—headers, alignment, row/column structure, formatting, or small semantic mismatches. Many existing automatic metrics under-diagnose these issues, making it hard to compare systems or debug failures.
 
 **TabXEval** addresses this by using an **explicit evaluation rubric** and a **two-phase pipeline**:
 
 1. **TabAlign (Structure-first alignment)**  
-   First, TabXEval aligns reference and predicted tables structurally—pairing corresponding headers/cells using a combination of **rule-based** and **LLM-assisted** alignment—so later comparisons are made between the *right* elements. :contentReference[oaicite:3]{index=3}
+   First, TabXEval aligns reference and predicted tables structurally—pairing corresponding headers/cells using a combination of **rule-based** and **LLM-assisted** alignment—so later comparisons are made between the *right* elements.
 
 2. **TabCompare (Fine-grained comparison + explanations)**  
-   After alignment, TabXEval performs **systematic semantic + syntactic comparison** over aligned cells to produce **granular, interpretable feedback** (what is wrong, where, and why). :contentReference[oaicite:4]{index=4}
+   After alignment, TabXEval performs **systematic semantic + syntactic comparison** over aligned cells to produce **granular, interpretable feedback** (what is wrong, where, and why).
 
-To validate robustness and real-world applicability, the paper introduces **TabXBench**—a **multi-domain** benchmark with **realistic table perturbations** and **human annotations**—and reports a **sensitivity–specificity** analysis showing TabXEval’s robustness and explainability across table tasks. :contentReference[oaicite:5]{index=5}
+To validate robustness and real-world applicability, the paper introduces **TabXBench**—a **multi-domain** benchmark with **realistic table perturbations** and **human annotations**—and reports a **sensitivity–specificity** analysis showing TabXEval’s robustness and explainability across table tasks.
 
 
 ## Repository Structure
